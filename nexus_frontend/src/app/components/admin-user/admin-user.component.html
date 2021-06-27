@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h3>Add User</h3>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="form" >
+            <div class="form-group">
+              <label for="">Name:</label>
+              <input type="text" class="form-control" formControlName="userName"  required/>
+            </div>
+            <div *ngIf="form.controls.userName.errors && form.controls.userName.dirty">
+              <p *ngIf="form.controls.userName.errors.required" class="alert alert-danger">
+                Es un campo requerido
+              </p>
+            </div>
+            <div class="form-group">
+                <label for="">Age:</label>
+                <input type="number" class="form-control" formControlName="userAge" required/>
+            </div>
+            <div *ngIf="form.controls.userAge.errors && form.controls.userAge.dirty">
+              <p *ngIf="form.controls.userAge.errors.required" class="alert alert-danger">
+                Es un campo requerido
+              </p>
+            </div>
+            <div class="form-group">
+                <label for="">Position:</label>
+                <select class="form-control"  formControlName="position">
+                  <option value="">Select...</option>
+                  <option *ngFor="let position of positions" value="{{position.positionName}}">{{position.positionName}}</option>
+                </select>
+            </div>
+            <div *ngIf="form.controls.position.errors && form.controls.position.dirty">
+              <p *ngIf="form.controls.position.errors.required" class="alert alert-danger">
+                Es un campo requerido
+              </p>
+            </div>
+            <br/>
+            <button (click)="saveUser()" [disabled]="form.invalid" class="btn btn-success">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h3>Users</h3>
+      </div>
+      <div class="card-body">
+        <table class="table table-hover">
+          <thead>
+            <tr class="text-center">
+              <th>Name</th>
+              <th>Age</th>
+              <th>Position</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users" class="text-center">
+              <td>{{user.userName}}</td>
+              <td>{{user.userAge}}</td>
+              <td>{{user.position}}</td>
+              <td>
+                <button (click)="deleteUser(user)" class="btn btn-danger" style="margin-left: 10px;">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
