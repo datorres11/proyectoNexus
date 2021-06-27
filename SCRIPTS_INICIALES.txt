@@ -1,0 +1,133 @@
+##################### CREATES TABLES #########################
+
+############## POSITION TABLE ###############################
+-- Table: public.commodity
+
+-- DROP TABLE public.commodity;
+-- Table: public.position
+
+-- DROP TABLE public."position";
+
+CREATE TABLE public."position"
+(
+    position_id integer NOT NULL,
+    position_name text COLLATE pg_catalog."default",
+    CONSTRAINT "POSITON_pkey" PRIMARY KEY (position_id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public."position"
+    OWNER to postgres;
+
+############## COMMODITY TABLE ###############################
+
+CREATE TABLE public.commodity
+(
+    product_name text COLLATE pg_catalog."default",
+    product_amount integer,
+    commodity_id integer NOT NULL,
+    user_nexus integer,
+    modified_by text COLLATE pg_catalog."default",
+    date_of_admission date,
+    modification_date date,
+    CONSTRAINT "COMODITY_pkey" PRIMARY KEY (commodity_id),
+    CONSTRAINT comodity_x_user FOREIGN KEY (user_nexus)
+        REFERENCES public.user_nexus (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.commodity
+    OWNER to postgres;
+
+############## USER_NEXUS TABLE ###############################
+-- Table: public.user_nexus
+
+-- DROP TABLE public.user_nexus;
+
+CREATE TABLE public.user_nexus
+(
+    user_id integer NOT NULL,
+    user_name text COLLATE pg_catalog."default",
+    user_position integer,
+    user_age integer,
+    CONSTRAINT "USER_pkey" PRIMARY KEY (user_id),
+    CONSTRAINT user_x_position FOREIGN KEY (user_position)
+        REFERENCES public."position" (position_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.user_nexus
+    OWNER to postgres;
+
+############ SECUENCIAS INICIALES ###############################
+
+############## COMMODITY SEQUENCE ###############################
+
+-- SEQUENCE: public.commodity_id_seq
+
+-- DROP SEQUENCE public.commodity_id_seq;
+
+CREATE SEQUENCE public.commodity_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.commodity_id_seq
+    OWNER TO postgres;
+
+############## POSITION SEQUENCE ###############################
+
+-- SEQUENCE: public.position_id_seq
+
+-- DROP SEQUENCE public.position_id_seq;
+
+CREATE SEQUENCE public.position_id_seq
+    INCREMENT 1
+    START 4
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.position_id_seq
+    OWNER TO postgres;
+
+############## USER_NEXUS SEQUENCE ###############################
+
+-- SEQUENCE: public.user_id_seq
+
+-- DROP SEQUENCE public.user_id_seq;
+
+CREATE SEQUENCE public.user_id_seq
+    INCREMENT 1
+    START 4
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.user_id_seq
+    OWNER TO postgres;
+
+############ INSERTS INICIALES ###############################
+
+INSERT INTO position(position_id,position_name)
+values(1,'Asesor de ventas');
+INSERT INTO position(position_id,position_name)
+values(2,'administrador');
+INSERT INTO position(position_id,position_name)
+values(3,'soporte');
+INSERT INTO user_nexus(user_id,user_name,user_age,user_position)
+values(1,'Andres Perez',25,1);
+INSERT INTO user_nexus(user_id,user_name,user_age,user_position)
+values(2,'Juan Galindo',29,2);
+INSERT INTO user_nexus(user_id,user_name,user_age,user_position)
+values(3,'Francisco Gomez',34,3);
